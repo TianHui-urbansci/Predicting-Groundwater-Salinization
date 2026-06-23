@@ -13,7 +13,7 @@ XGBoost salinity models, interpret results with SHAP, and project chloride
 concentrations under sea-level rise (SLR) scenarios.
 
 The study covers **13 Atlantic and Gulf Coast states** (NJ, PA, DE, MD, VA, NC,
-SC, GA, FL, AL, MS, LA, TX) using **243,754 chloride observations** from
+SC, GA, FL, AL, MS, LA, TX) using **243,753 chloride observations** from
 **46,289 monitoring wells** spanning 1906–2022.
 
 ---
@@ -356,7 +356,7 @@ The compiled, cleaned dataset used for all modeling is:
 ComprehensiveData/All_daily_full_Lev_final_20260602.csv
 ```
 
-- **243,754 chloride observations** from **46,289 monitoring wells**
+- **243,753 chloride observations** from **46,289 monitoring wells**
 - **13 states**, date range **1906–2022**
 - **65 columns** covering raw measurements, static features, tide levels,
   precipitation, and derived tidal elevation metrics
