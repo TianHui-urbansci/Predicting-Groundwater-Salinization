@@ -72,7 +72,7 @@ script. The figure below summarizes the workflow:
 
 ```
 Raw federal &               Compiled         Final analysis-ready
-state databases   ──01──►  state CSVs  ──►  dataset (244,768 rows)
+state databases   ──01──►  state CSVs  ──►  dataset (243,753 rows)
                                 │
                                02  Static features (SLR dist, aquifer,
                                 │  salt dome dist, tide stations)
@@ -115,13 +115,13 @@ using the NED 30 m DEM and NHD Best Resolution, respectively.
 ### Step 3 — Dynamic Features (`03_add_dynamic_features.py`)
 Hourly water-level data were downloaded from the NOAA CO-OPS API for all
 required tide gauge stations and aggregated to daily mean, maximum, and minimum
-tide levels plus N-day rolling statistics (N = 1–7, 14 days). A three-station
-fallback chain filled dates where the nearest station had missing observations.
-Daily precipitation and rolling accumulations (1–7 days, 14 days, 1, 3, 6, and
-12 months) were extracted from NOAA nClimGrid-Daily NetCDF files by matching
-each well to the nearest valid land grid cell via a KD-tree. Two derived tidal
-elevation metrics were computed: `Ele_MHHW` (surface elevation minus daily mean
-tide, m) and `Ele_MAX` (surface elevation minus daily tidal maximum, m).
+tide levels. A three-station fallback chain filled dates where the nearest
+station had missing observations. Daily precipitation and rolling accumulations
+(1–7 days, 14 days, 1, 3, 6, and 12 months) were extracted from NOAA
+nClimGrid-Daily NetCDF files by matching each well to the nearest valid land
+grid cell via a KD-tree. Two derived tidal elevation metrics were computed:
+`Ele_MHHW` (surface elevation minus daily mean tide, m) and `Ele_MAX`
+(surface elevation minus daily tidal maximum, m).
 
 **Output:** updated `ComprehensiveData/All_daily_full_Lev_final_*.csv`
 
@@ -255,7 +255,6 @@ Adds time-varying predictors to the dataset.
 | Column(s) | Description | Source |
 |-----------|-------------|--------|
 | `Daily_Mean`, `Daily_Max`, `Daily_Min` | Daily tide water level at nearest NOAA station (m, MHHW datum) | NOAA CO-OPS API |
-| `{N}day_mean/max/min` (N = 1–7, 14) | Rolling N-day tide statistics | — |
 | `Station_ID` | Which station provided each row's tide data | — |
 | `daily_precip` | Daily precipitation (mm) | NOAA nClimGrid-Daily (Durre et al., 2022) |
 | `{1–7,14}d_Before_prec` | Rolling precipitation sums (mm) | — |
@@ -353,18 +352,22 @@ SSP5-8.5) for the 8 states with the best-performing models (R² ≥ 0.75).
 The compiled, cleaned dataset used for all modeling is:
 
 ```
-ComprehensiveData/All_daily_full_Lev_final_20260602.csv
+ComprehensiveData/daily_chloride_final_20260620.csv
 ```
 
 - **243,753 chloride observations** from **46,289 monitoring wells**
 - **13 states**, date range **1906–2022**
-- **65 columns** covering raw measurements, static features, tide levels,
+- **44 columns** covering raw measurements, static features, tide levels,
   precipitation, and derived tidal elevation metrics
 - Only records with `Chloride > 0` are retained (physically impossible negative
   values and below-detection entries removed)
 
+The dataset used for displaying groundwater salinity and associated geologic,
+meteorological, and tidal information in this work are available at Zenodo
+(https://zenodo.org/records/20707353).
+
 This file is the input for scripts 04–06. It is **not** included in this
-repository due to size; contact the authors or reconstruct it by running
+repository due to size; access it via Zenodo or reconstruct it by running
 scripts 01–03 in sequence.
 
 ---
