@@ -1,0 +1,29 @@
+﻿Column,Description,Units,Source,Non_missing,Min,Max
+SiteNo,"Monitoring well identifier as issued by the source agency (USGS, WQP, NGWMN or state agency).",—,WQP; NGWMN; state agencies,182998,,
+Date,Sampling date of the chloride observation (YYYY-MM-DD).,date,WQP; NGWMN; state agencies,182998,1906-12-13,2023-12-13
+State,Two-letter U.S. state code. PA (85 wells) is included for completeness but was excluded from modeling.,—,—,182998,,
+lon,Well longitude.,decimal degrees,Source agencies,182998,-98.004,-73.961
+lat,Well latitude.,decimal degrees,Source agencies,182998,24.675,41.101
+Chloride,Chloride concentration of the groundwater sample (target variable).,mg/L,WQP; NGWMN; state agencies,182998,0.009,99500.0
+WellDepthM,Total well depth below land surface.,m,WQP; NGWMN; state agencies,182998,0.0,1991.563
+Surf_Ele,Land-surface elevation at the well.,"m, NAVD88","National Elevation Dataset, 30 m (USDA, 1999)",182998,-5.597,143.901
+Aquifer,USGS principal aquifer or aquifer system.,—,"Principal Aquifers of the United States (USGS, 2003)",182998,,
+Confine_class,"Confinement class of the principal aquifer (confined, unconfined, mixed).",—,Derived from principal aquifer,182998,,
+SLR0_DIST,"Planar distance from the well to the present-day (0 ft) NOAA inundation extent (land at or below MHHW, 1983–2001 epoch); 0 = inside the extent.",m,"NOAA Sea Level Rise Viewer extent rasters (NOAA, 2019)",182998,0.0,19999.9
+Hydro_DIST,Planar distance from the well to the nearest surface-water body.,m,"National Hydrography Dataset (USGS, 2023)",182998,0.0,19279.2
+Salt_DIST,Planar distance from the well to the nearest mapped subsurface salt dome (Gulf Coast states only).,m,Andrews (2023); Beckman & Williamson (1990); Schuba et al. (2025),24549,0.0,162274.9
+SLR_4_DIST,"Distance to the projected inundation extent under +4 ft (1.22 m) sea-level rise; SSP2-4.5 for Atlantic states, AL and MS.",m,NOAA (2019),162137,0.0,19934.1
+SLR_5_DIST,Distance to the projected inundation extent under +5 ft (1.52 m); SSP2-4.5 for LA and TX.,m,NOAA (2019),20861,0.0,19805.6
+SLR_7_DIST,"Distance to the projected inundation extent under +7 ft (2.13 m); SSP5-8.5 for Atlantic states, AL and MS.",m,NOAA (2019),162137,0.0,19947.0
+SLR_9_DIST,Distance to the projected inundation extent under +9 ft (2.74 m); SSP5-8.5 for LA and TX.,m,NOAA (2019),20861,0.0,19772.2
+daily_precip,Precipitation on the sampling date.,mm,"nClimGrid-Daily (Durre et al., 2022)",176502,0.0,337.5
+1d_Before_prec,Precipitation on the day before the sampling date; used in the projection-configuration search.,mm,"nClimGrid-Daily (Durre et al., 2022)",176497,0.0,337.5
+7d_Before_prec,Cumulative precipitation over the 7 days preceding the sampling date.,mm,"nClimGrid-Daily (Durre et al., 2022)",176497,0.0,472.3
+1m_Before_prec,Cumulative precipitation over the 30 days preceding the sampling date.,mm,"nClimGrid-Daily (Durre et al., 2022)",176497,0.0,603.24
+WaterLevel_m,"Depth to water below land surface at the time of sampling, positive downward; negative values indicate artesian conditions (water level above land surface).",m,WQP; NGWMN; state agencies,43839,-20.236,439.0
+WaterEle_m,"Groundwater (water-level) elevation, computed as Surf_Ele − WaterLevel_m.","m, NAVD88",Derived,43839,-421.702,138.411
+Daily_Mean,"Daily mean water level at the nearest NOAA tide gauge on the sampling date, converted from MHHW to NAVD88.","m, NAVD88","NOAA Tides & Currents (NOAA, 2024)",167176,-4.243,2.302
+Daily_Max,"Daily maximum water level at the nearest NOAA tide gauge on the sampling date, converted from MHHW to NAVD88.","m, NAVD88","NOAA Tides & Currents (NOAA, 2024)",167176,-3.259,2.58
+Ele_abv_MWL,Land-surface elevation above the daily mean tidal water level (Surf_Ele − Daily_Mean).,m,Derived,167176,-5.648,143.903
+Ele_abv_MAX,Land-surface elevation above the daily maximum tidal water level (Surf_Ele − Daily_Max).,m,Derived,167176,-5.989,143.331
+Ele_abv_MWL_1y,Land-surface elevation above the mean tidal water level of the 365 days preceding the sampling date; predictor in the tide-referenced (TIDE) model.,m,Derived,154793,-5.639,144.006
