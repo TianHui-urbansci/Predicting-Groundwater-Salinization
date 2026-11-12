@@ -28,6 +28,10 @@ or below 250 mg/L and seed-mean projected chloride above it. For tide-referenced
 the transitions are also recounted with the distance change alone (the elevation term
 held at present-day values), which separates the two pathways.
 
+Newly at risk = currently fresh inundated wells (Case 1 with observed median chloride at
+or below 250 mg/L) + fresh-to-saline transitions. Inundated wells already above 250 mg/L
+are counted in `inundated` but not as newly at risk.
+
 Output: results/table7_slr_projection.csv, results/table7_regional.csv,
         results/projection_eligibility.csv, results/figure_wells_SSP245.csv,
         results/figure_wells_SSP585.csv
@@ -124,7 +128,8 @@ for st in STATES:
         rec = dict(State=st, region=REGION_OF[st], model="yes" if has_model else "no",
                    R2_orig=round(r2, 3) if has_model else np.nan, scenario=f"{x} ft",
                    rise_m=round(x * FT_M, 2), total_wells=total, existing_saline=existing,
-                   inundated=int(inund.sum()))
+                   inundated=int(inund.sum()),
+                   inundated_fresh=int((inund & (panel.obs_Cl <= EPA_CL)).sum()))
         not_in = ~inund[modelable].values
         p_mean, p_dist = np.mean(scen[x], axis=0), np.mean(dist_only[x], axis=0)
         fresh = not_in & (P["obs_Cl"].values <= EPA_CL)
@@ -142,7 +147,7 @@ for st in STATES:
                                                       if elev == TIDE else np.nan),
                        median_pct_change=round(np.median(ch), 2),
                        pct_wells_rising=round(100 * np.mean(p_mean[good] > b_mean[good]), 1))
-        new = rec["inundated"] + rec.get("fresh_to_saline", 0)
+        new = rec["inundated_fresh"] + rec.get("fresh_to_saline", 0)
         rec.update(total_newly_at_risk=new, pct_of_wells=round(100 * new / total, 1))
         rows.append(rec)
 
@@ -155,7 +160,8 @@ for st in STATES:
             w.loc[w.index[idx], "fresh_to_saline"] = f2s
             w.loc[w.index[idx[ext & not_in]], "case"] = 2
         wells_out[i].append(w)
-        print(f"  {st} +{x} ft  inundated {rec['inundated']:5,}  fresh->saline "
+        print(f"  {st} +{x} ft  inundated {rec['inundated']:5,} "
+              + f"(fresh {rec['inundated_fresh']:5,})  fresh->saline "
               + (f"{rec['fresh_to_saline']:4d}" if has_model else " n/a")
               + f"  newly at risk {new:5,} ({rec['pct_of_wells']}%)")
 
@@ -170,12 +176,13 @@ T["tier"] = np.where(T.scenario.isin(["4 ft", "5 ft"]), "SSP2-4.5", "SSP5-8.5")
 reg = []
 for (r, tier), g in pd.concat([T, T.assign(region="Total")]).groupby(["region", "tier"]):
     f2s = g.loc[g.model == "yes", "fresh_to_saline"].sum()
-    new = g.inundated.sum() + f2s
+    new = g.inundated_fresh.sum() + f2s
     reg.append(dict(region=r, tier=tier, wells=g.total_wells.sum(),
                     existing_saline=g.existing_saline.sum(), inundated=g.inundated.sum(),
+                    inundated_fresh=g.inundated_fresh.sum(),
                     fresh_to_saline=int(f2s), newly_at_risk=int(new),
                     pct_of_wells=round(100 * new / g.total_wells.sum(), 1),
-                    pct_inundation=round(100 * g.inundated.sum() / new, 1),
+                    pct_inundation=round(100 * g.inundated_fresh.sum() / new, 1),
                     pct_of_existing_saline=round(100 * new / g.existing_saline.sum(), 0)))
 R = pd.DataFrame(reg)
 R.to_csv(out("table7_regional.csv"), index=False)

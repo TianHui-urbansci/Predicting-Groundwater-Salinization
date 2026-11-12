@@ -98,7 +98,7 @@ cb.set_label("Direction of response (Spearman ρ)\n"
              fontsize=10.5, color=INK2)
 cb.outline.set_visible(False); cb.ax.tick_params(labelsize=10, colors=INK2)
 
-kax = fig.add_axes([0.16, -0.20, 0.20, 0.10])
+kax = fig.add_axes([0.16, -0.075, 0.20, 0.10])
 kax.set_facecolor("#fcfcfb")
 for sp in kax.spines.values():
     sp.set_visible(False)

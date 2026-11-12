@@ -53,7 +53,7 @@ Run from this folder. Each script reads `data/`, writes tables to `results/` and
 | `05_groundwater_head_sensitivity.py` | 2.5.3, 3.3.3, Tables 5–6 | Six representations of groundwater head by principal aquifer, with bootstrap confidence intervals over wells |
 | `06_projection_model_selection.py` | 2.6.1, 3.4.1 | Searches predictor configurations and compares land-surface with tide-referenced elevation to choose each state's projection model |
 | `07_shap_analysis.py` | 2.5.4, 3.3.4, Figure 6 | SHAP attribution share and response direction of each projection model, and the matching correlations in the observed data |
-| `08_slr_projection.py` | 2.6.2, 3.4.2, Table 7, Figures 7–8 | Applies the projection criteria, then counts inundated wells and fresh-to-saline transitions under SSP2-4.5 (+4/+5 ft) and SSP5-8.5 (+7/+9 ft) |
+| `08_slr_projection.py` | 2.6.2, 3.4.2, Table 7, Figures 7–8 | Applies the projection criteria, then counts inundated wells and fresh-to-saline transitions under SSP2-4.5 (+4/+5 ft) and SSP5-8.5 (+7/+9 ft). Newly at risk = currently fresh inundated wells (observed median chloride ≤250 mg/L) + fresh-to-saline transitions |
 
 **Figures** (`figures/`, written to `figures/output/`):
 

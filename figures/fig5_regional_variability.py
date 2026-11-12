@@ -4,8 +4,8 @@ One value per well (its median), so states are not weighted by sampling frequenc
 each state the dot is the median, the bar the 25th-75th percentile and the whisker the
 75th-95th percentile, on linear axes. The chloride axis is clipped at 400 mg/L; where a
 state's 95th percentile lies beyond it, an arrow marks the edge and the value is printed.
-The tide panel shows Daily_Mean, the daily mean water level (NAVD88) at each well's tide
-gauge. Pennsylvania is excluded.
+The tide panel shows Daily_Max, the daily maximum water level (NAVD88) at each well's
+tide gauge. Pennsylvania is excluded.
 
 Usage:  python figures/fig5_regional_variability.py [--data <dataset.csv>]
 """
@@ -33,7 +33,7 @@ PANELS = [("Chloride", "Chloride", "mg/L"),
           ("Distance to surface water", "Hydro_DIST", "km"),
           ("Distance to salt dome", "Salt_DIST", "km"),
           ("Water-table elevation", "WaterEle_m", "m"),
-          ("Daily mean tide level", "Daily_Mean", "m")]
+          ("Daily maximum tide level", "Daily_Max", "m")]
 KM = {"SLR0_DIST", "Hydro_DIST", "Salt_DIST"}      # metres are unreadable at this range
 # Chloride only: the axis cannot hold every state's tail (see docstring). The clip is set
 # just above the largest interquartile range in the panel so the bars stay legible.
@@ -50,7 +50,7 @@ for c in KM:
 order = W.groupby("State").Chloride.median().sort_values().index.tolist()   # low to high
 y = {s: i for i, s in enumerate(order)}
 
-fig, axes = plt.subplots(2, 4, figsize=(15.0, 7.2))
+fig, axes = plt.subplots(2, 4, figsize=(15.0, 8.4))
 for ax, (title, col, unit) in zip(axes.ravel(), PANELS):
     stats, lo_all, hi_all = [], [], []
     for st in order:
@@ -101,7 +101,7 @@ for ax, (title, col, unit) in zip(axes.ravel(), PANELS):
     for s in ("top", "right", "left"):
         ax.spines[s].set_visible(False)
     ax.spines["bottom"].set_color("#cfcec9")
-    sub = unit + ("   ·   axis clipped; arrows give the 95th pct" if clip else "")
+    sub = unit + ("  ·  clipped; arrows = 95th pct" if clip else "")
     ax.set_title(title, fontsize=15.9, color=INK, pad=20, loc="left")
     ax.text(0, 1.015, sub, transform=ax.transAxes, fontsize=12.15, color=INK2, va="bottom")
 
@@ -111,7 +111,7 @@ handles = [Line2D([], [], ls="", marker="o", mfc=DOT, mec="#fcfcfb", mew=1.0, ms
            Line2D([], [], color=WHIS, lw=1.5, marker="|", ms=6, mec=WHIS, mew=1.5,
                   label="75th–95th percentile")]
 fig.legend(handles=handles, loc="lower center", ncol=3, frameon=False, fontsize=14.1,
-           bbox_to_anchor=(.5, -.078))
-fig.tight_layout(rect=[0, .01, 1, 1])
+           bbox_to_anchor=(.5, -.035))
+fig.subplots_adjust(left=.035, right=.985, top=.93, bottom=.075, wspace=.17, hspace=.36)
 fig.savefig(OUT, dpi=300, bbox_inches="tight", facecolor="#fcfcfb")
 print("wrote")
